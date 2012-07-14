@@ -65,7 +65,7 @@ module Cloudkick
         :http_method => :get)
       @access_token = OAuth::AccessToken.new(consumer)
     end
-    
+
     # Private method to create a monitor, expects the monitor to
     # not already exist.
     # Raises an exception if the monitor is not created.
@@ -83,7 +83,7 @@ module Cloudkick
         raise APIClientError, request
       end
     end
-    
+
     # Gets a monitors attributes. If the monitor doesn't exist, it's created.
     def get_monitor(name, query, notes)
       monitor_attributes = find_monitor(name)
@@ -94,12 +94,12 @@ module Cloudkick
         monitor_attributes
       end
     end
-    
+
     def list_monitors
       resource_uri = '/2.0/monitors'
-    
+
       request = @access_token.get(resource_uri)
-    
+
       case request.response.code
       when '200'
         JSON.parse(request.response.body, :symbolize_names => true)
@@ -107,21 +107,21 @@ module Cloudkick
         raise APIClientError, request
       end
     end
-    
+
     def find_monitor(name)
       all_monitors = list_monitors[:items]
       all_monitors.select{ |m| m[:name] == name }.first
     end
-  
+
     def change_monitor_state(name, state)
       monitor_attributes = find_monitor(name)
       # Trust No One.
       escaped_id = OAuth::Helper.escape(monitor_attributes[:id])
       escaped_state = OAuth::Helper.escape(state)
       resource_uri = "/2.0/monitor/#{escaped_id}/#{escaped_state}"
-    
+
       request = @access_token.post(resource_uri)
-    
+
       case request.response.code
       when '204'
         request.response.body
@@ -130,15 +130,15 @@ module Cloudkick
       end
     end
     private :change_monitor_state
-  
+
     def enable_monitor(name)
       change_monitor_state(name=name, state='enable')
     end
-  
+
     def disable_monitor(name)
       change_monitor_state(name=name, state='disable')
     end
-    
+
     # Private method to create a Check, expects the Check to
     # not already exist.
     # Raises an exception if the Check is not created.
