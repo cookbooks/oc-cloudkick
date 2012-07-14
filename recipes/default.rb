@@ -20,9 +20,15 @@
 case node['platform_family']
 when "debian"
 
+  if node['platform'] == 'ubuntu' && node['platform_version'].to_f >= 11.10
+    codename = 'lucid'
+  else
+    codename = node['lsb']['codename']
+  end
+
   apt_repository "cloudkick" do
     uri "http://packages.cloudkick.com/ubuntu"
-    distribution node['lsb']['codename']
+    distribution codename
     components ["main"]
     key "http://packages.cloudkick.com/cloudkick.packages.key"
     action :add
@@ -55,7 +61,7 @@ template "/etc/cloudkick.conf" do
 end
 
 package "cloudkick-agent" do
-  action :upgrade
+  action :install
 end
 
 service "cloudkick-agent" do
@@ -71,7 +77,11 @@ ruby_block "cloudkick data load" do
   block do
     require 'oauth'
     require 'cloudkick'
-    node.set['cloudkick']['data'] = Chef::CloudkickData.get(node)
+    begin
+      node.set['cloudkick']['data'] = Chef::CloudkickData.get(node)
+    rescue Exception => e
+      Chef::Log.warn("Unable to retrieve Cloudkick data for #{node.name}\n#{e}")
+    end
   end
   action :create
 end
