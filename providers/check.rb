@@ -39,16 +39,20 @@ action :create do
   check_attributes = apiclient.get_check(check_details=new_resource.details,
                                          check_code=new_resource.code,
                                          check_params=check_params)
+
+  new_resource.updated_by_last_action(true)
 end
 
 
 # TODO(gba@20111017) Write method to enable checks.
 action :enable do
   # code to enable check
+  new_resource.updated_by_last_action(true)
 end
 
 
 # TODO(gba@20111017) Write method to disable checks.
 action :disable do
   # code to disable check
+  new_resource.updated_by_last_action(true)
 end

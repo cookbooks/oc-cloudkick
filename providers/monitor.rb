@@ -38,16 +38,22 @@ action :create do
                                              query=query,
                                              notes=new_resource.notes)
   Chef::Log.debug("monitor_attributes=#{monitor_attributes}")
+
+  new_resource.updated_by_last_action(true)
 end
 
 
 # TODO(gba@20111017) Write method to enable Monitors.
 action :enable do
   # code to enable monitor
+
+  new_resource.updated_by_last_action(true)
 end
 
 
 # TODO(gba@20111017) Write method to disable Monitors.
 action :disable do
   # code to disable monitor
+
+  new_resource.updated_by_last_action(true)
 end
