@@ -25,7 +25,6 @@
 
 include Cloudkick
 
-
 action :create do
   # There doesn't appear to be a way to set a default
   # LWRP Resource Attribute to a Node Attribute, so we'll set it here.
@@ -51,10 +50,4 @@ end
 # TODO(gba@20111017) Write method to disable Monitors.
 action :disable do
   # code to disable monitor
-end
-
-
-def initialize(*args)
-  super
-  @action = :create
 end

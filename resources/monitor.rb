@@ -24,6 +24,7 @@
 #
 
 actions :create, :enable, :disable
+default_action :create
 
 attribute :oauth_key, :kind_of => String, :required => true
 attribute :oauth_secret, :kind_of => String, :required => true

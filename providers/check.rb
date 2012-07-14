@@ -25,7 +25,6 @@
 
 include Cloudkick
 
-
 # TODO(gba@20111014) Implement other params (timeout, period, etc)
 action :create do
   apiclient = Cloudkick::APIClient.new(oauth_key=new_resource.oauth_key,
@@ -52,10 +51,4 @@ end
 # TODO(gba@20111017) Write method to disable checks.
 action :disable do
   # code to disable check
-end
-
-
-def initialize(*args)
-  super
-  @action = :create
 end
