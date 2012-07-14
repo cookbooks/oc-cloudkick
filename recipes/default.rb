@@ -59,23 +59,15 @@ service "cloudkick-agent" do
   subscribes :restart, resources(:template => "/etc/cloudkick.conf")
 end
 
-gem_package "cloudkick" do
-  action :install
-end
+# oauth gem for http://tickets.opscode.com/browse/COOK-797
+chef_gem "oauth"
+chef_gem "cloudkick"
 
 ruby_block "cloudkick data load" do
   block do
-    Gem.clear_paths
+    require 'oauth'
     require 'cloudkick'
     node.set['cloudkick']['data'] = Chef::CloudkickData.get(node)
   end
   action :create
 end
-
-# oauth gem for http://tickets.opscode.com/browse/COOK-797
-oauth_gem = gem_package "oauth" do
-  action :install
-end
-oauth_gem.run_action(:install)
-Gem.clear_paths
-require 'oauth'
