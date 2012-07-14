@@ -17,8 +17,9 @@
 # limitations under the License.
 #
 
-case node['platform']
-when "ubuntu"
+case node['platform_family']
+when "debian"
+
   apt_repository "cloudkick" do
     uri "http://packages.cloudkick.com/ubuntu"
     distribution node['lsb']['codename']
@@ -26,11 +27,14 @@ when "ubuntu"
     key "http://packages.cloudkick.com/cloudkick.packages.key"
     action :add
   end
-when "centos", "redhat"
+
+when "rhel", "fedora"
+
   yum_repository "cloudkick" do
     url "http://packages.cloudkick.com/redhat/$basearch"
     action :add
   end
+
 end
 
 remote_directory "/usr/lib/cloudkick-agent/plugins" do
