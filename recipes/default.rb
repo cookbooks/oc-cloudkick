@@ -41,6 +41,12 @@ when "rhel", "fedora"
     action :add
   end
 
+  if (node['platform'] == 'centos' && node['platform_version'].to_f >= 6.0)
+    rpm_package "" do
+      source "http://packages.cloudkick.com/releases/cloudkick-config/binaries/cloudkick-config-centos6-1.2.1-0.x86_64.rpm"
+    end
+  end
+
 end
 
 remote_directory "/usr/lib/cloudkick-agent/plugins" do
