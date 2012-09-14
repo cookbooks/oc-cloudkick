@@ -1,0 +1,3 @@
+cookbook "cloudkick" do
+  runtimes []
+end
