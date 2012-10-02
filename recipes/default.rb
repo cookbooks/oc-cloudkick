@@ -34,6 +34,10 @@ when "debian"
     action :add
   end
 
+  if node['platform'] == 'ubuntu' && node['platform_version'].to_f >= 11.10
+    package "libssl0.9.8"
+  end
+
 when "rhel", "fedora"
 
   yum_repository "cloudkick" do
